@@ -10,14 +10,19 @@ html.dark {
   color-scheme: dark;
 }
 
-
 .splitpanes--vertical > .splitpanes__splitter {
-  min-width: 8px;
-  background: #99999920
+  min-width: 6px;
+  background: #99999920;
+  transition: all 0.3s;
+}
+
+.splitpanes--vertical > .splitpanes__splitter:active,
+.splitpanes__splitter:hover {
+  min-width: 10px;
+  background: #99999975;
 }
 
 .splitpanes--horizontal > .splitpanes__splitter {
-  min-height: 6px;
-  background: linear-gradient(0deg, #ccc, #111);
+  min-height: 8px;
+  background: #99999920;
 }
-

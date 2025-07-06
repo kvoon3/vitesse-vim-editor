@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { EditorOptions } from '../types'
 import { shikiToMonaco } from '@shikijs/monaco'
+import { objectOmit } from '@vueuse/core'
 import * as monaco from 'monaco-editor'
 // @ts-expect-error no type
 import { initVimMode, VimMode } from 'monaco-vim'
@@ -11,18 +12,23 @@ const props = defineProps<{
   options?: EditorOptions
 }>()
 
-const value = defineModel('value', {default: ''})
-const emits  = defineEmits<{
+const emits = defineEmits<{
   (e: 'sp'): void
 }>()
+const value = defineModel('value', { default: '' })
 
 const editorRef = templateRef('editorRef')
 const statusbarRef = templateRef('statusbarRef')
-const editor = shallowRef<ReturnType<typeof monaco.editor.create>>()
+const editor = shallowRef<monaco.editor.IStandaloneCodeEditor>()
+
+const model = monaco.editor.createModel(
+  value.value,
+  props.options?.language,
+)
 
 const { Vim } = VimMode
-Vim.defineEx('split', 'sp', () =>  emits('sp'))
-Vim.defineEx('split', 'sp', () =>  emits('sp'))
+Vim.defineEx('split', 'sp', () => emits('sp'))
+Vim.defineEx('split', 'sp', () => emits('sp'))
 
 onMounted(async () => {
   const highlighter = await createHighlighter({
@@ -34,23 +40,20 @@ onMounted(async () => {
     langs: [
       'javascript',
       'typescript',
-      'vue',
       'markdown',
     ],
   })
 
-  // Register the languageIds first. Only registered languages will be highlighted.
-  monaco.languages.register({ id: 'vue' })
-  monaco.languages.register({ id: 'typescript' })
-  monaco.languages.register({ id: 'javascript' })
-
   // Register the themes from Shiki, and provide syntax highlighting for Monaco.
   shikiToMonaco(highlighter, monaco)
 
-  editor.value = monaco.editor.create(editorRef.value!, props.options)
+  editor.value = monaco.editor.create(editorRef.value!, {
+    ...props.options,
+    model,
+  })
   editor.value.onDidChangeModelContent(() => {
     const v = editor.value?.getValue()
-    if(v)
+    if (v)
       value.value = v
   })
   initVimMode(editor.value, statusbarRef.value!)
@@ -59,8 +62,15 @@ onMounted(async () => {
     if (!value)
       return
 
-    editor.value?.updateOptions(value)
+    // FIXME: theme may already changed
+    editor.value?.updateOptions(objectOmit(value, ['theme']))
   }, { deep: true })
+  watch(() => props.options?.language, (value) => {
+    if (!value)
+      return
+
+    monaco.editor.setModelLanguage(model, value)
+  })
 
   watchEffect(() => {
     editor.value?.updateOptions({
@@ -78,7 +88,7 @@ defineExpose({
 <template>
   <div grid="~ rows-[1fr_min-content]">
     <div relative>
-      <div absolute inset-0 ref="editorRef" />
+      <div ref="editorRef" inset-0 absolute />
     </div>
     <div px4 py2 dark:bg-black>
       <div ref="statusbarRef" color-black font-mono dark:color-white />

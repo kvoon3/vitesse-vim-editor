@@ -2,9 +2,11 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 import App from './App.vue'
+import './worker'
 
 import './styles/main.css'
 import 'uno.css'
+import 'splitpanes/dist/splitpanes.css'
 
 const app = createApp(App)
 const router = createRouter({
