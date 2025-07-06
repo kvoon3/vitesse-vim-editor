@@ -1,0 +1,23 @@
+html,
+body,
+#app {
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+
+.splitpanes--vertical > .splitpanes__splitter {
+  min-width: 8px;
+  background: #99999920
+}
+
+.splitpanes--horizontal > .splitpanes__splitter {
+  min-height: 6px;
+  background: linear-gradient(0deg, #ccc, #111);
+}
+
