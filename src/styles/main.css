@@ -17,7 +17,7 @@ html.dark {
 }
 
 .splitpanes--vertical > .splitpanes__splitter:active,
-.splitpanes__splitter:hover {
+.splitpanes--vertical > .splitpanes__splitter:hover {
   min-width: 10px;
   background: #99999975;
 }

@@ -2,6 +2,7 @@
 import type { EditorOptions } from './types'
 // @ts-expect-error no type
 import { Pane, Splitpanes } from 'splitpanes'
+import 'splitpanes/dist/splitpanes.css'
 
 const defaultText = [
   '# Vitesse Vim',

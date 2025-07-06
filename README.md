@@ -1,14 +1,14 @@
 # Vitesse Vim Editor
 
-Vim Online, Styled with Vitesse
+Vim Online, Styled with Vitesse.
 
 > [!NOTE]
 > The project is still in the early validation stage
 
 ## Todos
 
-- [ ] Terminal (webcontainer)
 - [ ] More opinionated vim keybinding
+- [ ] Terminal (webcontainer)
 - [ ] Split Window: `sp` and `vs` command
 
 ## Credit
