@@ -29,6 +29,7 @@ const model = monaco.editor.createModel(
 const { Vim } = VimMode
 Vim.defineEx('split', 'sp', () => emits('sp'))
 Vim.defineEx('split', 'sp', () => emits('sp'))
+Vim.map('<C-a>', 'ggVG', 'normal')
 
 onMounted(async () => {
   const highlighter = await createHighlighter({
