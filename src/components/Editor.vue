@@ -30,6 +30,15 @@ const { Vim } = VimMode
 Vim.defineEx('split', 'sp', () => emits('sp'))
 Vim.defineEx('split', 'sp', () => emits('sp'))
 Vim.map('<C-a>', 'ggVG', 'normal')
+Vim.unmap('<Space>')
+Vim.defineAction('githubMdCheckbox', (cm: any) => {
+  Vim.handleEx(cm, 's/\[\s\]/[x]/g')
+  Vim.handleEx(cm, 'nohls')
+  Vim.handleKey(cm, 'h')
+  Vim.handleKey(cm, 'j')
+  Vim.handleKey(cm, 'j')
+})
+Vim.mapCommand('<Space>s', 'action', 'githubMdCheckbox')
 
 onMounted(async () => {
   const highlighter = await createHighlighter({
