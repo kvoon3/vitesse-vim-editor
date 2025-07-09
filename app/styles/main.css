@@ -1,6 +1,6 @@
 html,
 body,
-#app {
+#__nuxt {
   height: 100dvh;
   margin: 0;
   padding: 0;
@@ -11,14 +11,13 @@ html.dark {
 }
 
 .splitpanes--vertical > .splitpanes__splitter {
-  min-width: 6px;
+  width: 8px;
   background: #99999920;
   transition: all 0.3s;
 }
 
 .splitpanes--vertical > .splitpanes__splitter:active,
 .splitpanes--vertical > .splitpanes__splitter:hover {
-  min-width: 10px;
   background: #99999975;
 }
 

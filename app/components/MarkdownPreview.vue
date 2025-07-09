@@ -5,12 +5,14 @@ const props = defineProps<{
   code: string
 }>()
 
+const colorMode = useColorMode()
+
 const md = MarkdownItAsync({
   async highlight(code, lang) {
     const { codeToHtml } = await import('shiki')
     return await codeToHtml(code, {
       lang,
-      theme: isDark.value ? 'vitesse-dark' : 'vitesse-light',
+      theme: colorMode.value === 'dark' ? 'vitesse-dark' : 'vitesse-light',
     })
   },
 })
@@ -20,7 +22,7 @@ onMounted(async () => {
 
 const html = shallowRef('')
 
-watch([() => props.code, isDark], async ([value]) => {
+watch([() => props.code, colorMode], async ([value]) => {
   html.value = await md.renderAsync(value)
 }, { immediate: true })
 </script>

@@ -2,10 +2,10 @@ import {
   defineConfig,
   presetAttributify,
   presetIcons,
+  presetTypography,
   presetWebFonts,
   presetWind4,
   transformerDirectives,
-  presetTypography,
 } from 'unocss'
 
 export default defineConfig({

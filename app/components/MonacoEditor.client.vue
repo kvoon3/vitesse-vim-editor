@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { EditorOptions } from '../types'
 import { shikiToMonaco } from '@shikijs/monaco'
-import { objectOmit } from '@vueuse/core'
 import * as monaco from 'monaco-editor'
-// @ts-expect-error no type
+// @ts-expect-error no type declare
 import { initVimMode, VimMode } from 'monaco-vim'
 import { createHighlighter } from 'shiki'
+import './worker'
 
 const props = defineProps<{
   id: number
@@ -17,8 +17,10 @@ const emits = defineEmits<{
 }>()
 const value = defineModel('value', { default: '' })
 
-const editorRef = templateRef('editorRef')
-const statusbarRef = templateRef('statusbarRef')
+const colorMode = useColorMode()
+
+const editorRef = useTemplateRef('editorRef')
+const statusbarRef = useTemplateRef('statusbarRef')
 const editor = shallowRef<monaco.editor.IStandaloneCodeEditor>()
 
 const model = monaco.editor.createModel(
@@ -31,14 +33,14 @@ Vim.defineEx('split', 'sp', () => emits('sp'))
 Vim.defineEx('split', 'sp', () => emits('sp'))
 Vim.map('<C-a>', 'ggVG', 'normal')
 Vim.unmap('<Space>')
-Vim.defineAction('githubMdCheckbox', (cm: any) => {
-  Vim.handleEx(cm, 's/\[\s\]/[x]/g')
-  Vim.handleEx(cm, 'nohls')
-  Vim.handleKey(cm, 'h')
-  Vim.handleKey(cm, 'j')
-  Vim.handleKey(cm, 'j')
-})
-Vim.mapCommand('<Space>s', 'action', 'githubMdCheckbox')
+// Vim.defineAction('githubMdCheckbox', (cm: any) => {
+//   Vim.handleEx(cm, 's/\[\s\]/[x]/g')
+//   Vim.handleEx(cm, 'nohls')
+//   Vim.handleKey(cm, 'h')
+//   Vim.handleKey(cm, 'j')
+//   Vim.handleKey(cm, 'j')
+// })
+// Vim.mapCommand('<Space>s', 'action', 'githubMdCheckbox')
 
 onMounted(async () => {
   const highlighter = await createHighlighter({
@@ -84,7 +86,7 @@ onMounted(async () => {
 
   watchEffect(() => {
     editor.value?.updateOptions({
-      theme: isDark.value ? 'vitesse-black' : 'vitesse-light',
+      theme: colorMode.value === 'dark' ? 'vitesse-black' : 'vitesse-light',
     })
   })
 })
